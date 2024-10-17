@@ -5,7 +5,7 @@
 twitch2osu is a portable desktop[^1] application that allows you to redirect your [Twitch](https://twitch.tv) chat messages to your [osu!](https://osu.ppy.sh/home) DMs (with some extra quality-of-life features!).
 
 > [!IMPORTANT]
-> The current version is deprecated and will be replaced by a newer UI-based version #1
+> The current version is deprecated and will be replaced by [a newer UI-based version](https://github.com/notiriscent/twitch2osu/issues/1)
 
 ## Get Started
 
