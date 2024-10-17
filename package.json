@@ -11,14 +11,14 @@
     "build": "node scripts/build.js"
   },
   "name": "twitch2osu",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "Twitch chat to osu! mirroring tool",
   "main": "index.js",
   "keywords": [
     "cli",
     "exe"
   ],
-  "author": "Iriscent",
+  "author": "notiriscent",
   "license": "MIT",
   "devDependencies": {
     "child_process": "^1.0.2",

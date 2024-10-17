@@ -12,7 +12,7 @@ function transformLength(length) {
 
 console.info('\x1b[36m%s\x1b[0m',
 `
-(v0.2, ignore the warning)
+(v1.2.0, ignore the warning)
  _            _ _       _     ___                 
 | |          (_) |     | |   |__ \\                
 | |___      ___| |_ ___| |__    ) |___  ___ _   _ 
