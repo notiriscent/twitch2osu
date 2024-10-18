@@ -1,6 +1,6 @@
 # twitch2osu
 
-![GitHub last commit (branch)](https://img.shields.io/github/last-commit/notiriscent/twitch2osu/main)
+![GitHub last commit (rework)](https://img.shields.io/github/last-commit/notiriscent/twitch2osu/rework)
 
 twitch2osu is a portable desktop[^1] application that allows you to redirect your [Twitch](https://twitch.tv) chat messages to your [osu!](https://osu.ppy.sh/home) DMs (with some extra quality-of-life features!).
 
