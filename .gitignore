@@ -133,5 +133,7 @@ dist
 package-lock.json
 
 # Build files
-
 /build
+
+# Built config
+config.json

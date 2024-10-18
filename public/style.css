@@ -1,0 +1,72 @@
+body, html {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #313142;
+    font-family: "Poppins", sans-serif;
+    font-weight: 300;
+    color: white;
+}
+
+nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 12px;
+    background-color: #383849;
+    border-bottom: 1px white solid;
+}
+
+nav a {
+    font-weight: 600;
+    margin-right: 24px;
+    text-decoration: none;
+    color: white;
+}
+
+nav a:visited {
+    color: white;
+}
+
+nav a:first-child {
+    font-size: 24px;
+    margin-left: 12px;
+}
+
+a {
+    color: #7990f5;
+}
+
+a:visited {
+    color: #a479f5;
+}
+
+.main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 455px;
+    background-color: #1212123f;
+}
+
+.main .links {
+    margin-top: 34px;
+    display: flex;
+    flex-direction: row;
+}
+
+.main .links a {
+    font-weight: 500;
+    margin-right: 20px;
+    text-decoration: none;
+    color: white;
+    padding: 6px;
+    border-radius: 8px;
+}
+
+.main .links a:visited {
+    color: white;
+}

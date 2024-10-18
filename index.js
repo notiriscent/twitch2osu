@@ -1,96 +1,45 @@
-const Banchojs = require("bancho.js");
-const tmi = require('tmi.js');
+const Express = require('express');
+const fs = require('fs');
+const colors = require('colors');
+const app = Express();
+const { open } = require('openurl');
 
-function transformLength(length) {
-    let minutes = Math.floor(length / 60);
-    let seconds = length % 60;
-    if(seconds < 10) {
-        seconds = "0" + seconds;
-    }
-    return `${minutes}:${seconds}`;
+if (!fs.existsSync('config.json')) {
+    console.warn('[warn]'.yellow, 'First launch detected, writing default config.'.bold.white);
+    const defaultConfig = {
+        password: '',
+        twitchChannel: '',
+        osuUsername: '',
+        debug: false
+    };
+
+    fs.writeFileSync('config.json', JSON.stringify(defaultConfig, '\n', 2));
+    console.info('[info]'.blue, 'Default config created, please press Enter and restart the program.'.bold.white);
+
+    process.stdin.on('data', (key) => {
+        process.exit(1);
+    });
+} else {
+    main();
 }
 
-console.info('\x1b[36m%s\x1b[0m',
-`
-(v1.2.0)
- _            _ _       _     ___                 
-| |          (_) |     | |   |__ \\                
-| |___      ___| |_ ___| |__    ) |___  ___ _   _ 
-| __\\ \\ /\\ / / | __/ __| '_ \\  / // _ \\/ __| | | |
-| |_ \\ V  V /| | || (__| | | |/ /| (_) \\__ \\ |_| |
- \\__| \\_/\\_/ |_|\\__\\___|_| |_|____\\___/|___/\\__,_|
-`)
+function main() {
+    console.log('[info]'.blue, 't2osu! starting...'.white.bold)
+    const config = require('./config.json');
 
-const { password, input } = require('@inquirer/prompts');
-
-var settings = {
-    password: undefined,
-    twitchChannel: undefined,
-    osuUsername: undefined
-};
-
-var client;
-
-(async () => {
-    settings['password'] = await password({ message: 'Enter your osu! IRC password:', mask: true });
-    settings['twitchChannel'] = await input({ message: 'Enter your Twitch channel:' });
-    settings['osuUsername'] = await input({ message: 'Enter your osu! username:' });
-    client = new Banchojs.BanchoClient({ username: settings['osuUsername'].replace(" ", "_"), password: settings['password'] });
-    const tmiclient = new tmi.Client({
-        channels: [ settings['twitchChannel'] ]
-    });
+    app.set('view engine', 'ejs');
+    app.use(Express.static('public'))
+    app.use('/', require('./routes/main'));
+    app.use('/api', require('./routes/api'));
     
-    var target;
-    
-    client.connect().then(() => {
-        console.log('\x1b[36m%s\x1b[0m', "We're online!");
-        target = client.getUser(settings['osuUsername'].replace(" ", "_"));
-    }).catch(console.error);
-    
-    tmiclient.connect();
-    
-    tmiclient.on('message', async (channel, tags, message, self) => {
-        if (!message.startsWith("!") || !message.startsWith("/")) {
-            const beatmapRegex = /https:\/\/osu\.ppy\.sh\/b(?:eatmapsets)?\/(\d+)(?:#osu\/(\d+))?/gmi;
-            let beatmapMatch;
-            var beatmapData;
-            while ((beatmapMatch = beatmapRegex.exec(message))!== null) {
-                const beatmapId = Number(beatmapMatch[1]);
-                const beatmapdiffId = Number(beatmapMatch[2]);
-
-                const url = beatmapdiffId ? 'https://catboy.best/api/v2/b/' + beatmapdiffId : 'https://catboy.best/api/v2/s/' + beatmapId ;
-
-                let cbApi = await fetch(url);
-
-                let cbData = await cbApi.json();
-                
-                if (cbData.error) {
-                    console.error(`Error fetching Catboy API data for beatmap ${beatmapId}: ${cbData.error}`);
-                    return;
-                }
-
-                beatmapData = {
-                    beatmaps: cbData.beatmaps,
-                    difficulty: cbData?.difficulty_rating,
-                    status: cbData?.status,
-                    length: transformLength(cbData?.total_length || cbData?.beatmaps[0]?.total_length),
-                    ar: cbData?.ar,
-                    bpm: cbData?.bpm,
-                    difficulty_name: cbData?.version,
-                    title: cbData?.set?.title || cbData?.title,
-                    artist: cbData?.set?.artist || cbData?.artist,
-                }
-            }
-
-            let formattedMessage = `${tags.username}: ${message}`;
-            if (beatmapData) {
-                if(beatmapData.beatmaps) {
-                    formattedMessage += ` - ${beatmapData.artist} - ${beatmapData.title} (${beatmapData.status}) | ${beatmapData.length} | BPM: ${beatmapData.bpm}`;
-                } else {
-                    formattedMessage += ` - ${beatmapData.artist} - ${beatmapData.title} (${beatmapData.difficulty_name} ${beatmapData.difficulty}*) (${beatmapData.status}) | ${beatmapData.length} | AR: ${beatmapData.ar} | BPM: ${beatmapData.bpm}`;
-                }
-            }
-            target.sendMessage(formattedMessage);
-        }
-    });
-})();
+    try {
+        app.listen(24727, async () => {
+            console.log('[info]'.blue, 'Webserver listening on port 24727.'.bold.green);
+            if(config.debug) return;
+            open('http://localhost:24727');
+        });
+    } catch (err) {
+        console.error('[error]'.red, 'Failed to start webserver:', err.message);
+        process.exit(1);
+    }
+}

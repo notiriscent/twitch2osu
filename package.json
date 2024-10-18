@@ -1,17 +1,20 @@
 {
   "dependencies": {
     "bancho.js": "^0.11.6",
+    "colors": "^1.4.0",
     "dotenv": "^16.4.5",
-    "inquirer": "^11.0.2",
-    "nodemon": "^3.1.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.1",
+    "openurl": "^1.1.1",
     "tmi.js": "^1.8.5"
   },
   "scripts": {
-    "dev": "nodemon index.js",
-    "build": "node scripts/build.js"
+    "dev": "nodemon .",
+    "build": "node scripts/build.js",
+    "start": "node ."
   },
   "name": "twitch2osu",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "Twitch chat to osu! mirroring tool",
   "main": "index.js",
   "keywords": [
@@ -22,6 +25,7 @@
   "license": "MIT",
   "devDependencies": {
     "child_process": "^1.0.2",
-    "esbuild": "^0.24.0"
+    "esbuild": "^0.24.0",
+    "nodemon": "^3.1.7"
   }
 }
