@@ -21,6 +21,12 @@ module.exports = class Client {
         });
     }
 
+    formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const secondsRemaining = seconds % 60;
+        return `${minutes.toString().padStart(2, '0')}:${secondsRemaining.toString().padStart(2, '0')}`;
+    }
+
     async start() {
         await this.banchoclient.connect();
         this.target = this.banchoclient.getUser(this.settings['osuUsername'].replace(" ", "_"));
@@ -41,9 +47,9 @@ module.exports = class Client {
                     var beatmapData = await bm.getBeatmapData();
 
                     if(beatmapData.type == 1) {
-                        formattedMessage += ` - ${beatmapData.set.artist} - ${beatmapData.set.title} (${beatmapData.status}) | ${beatmapData.length} | BPM: ${beatmapData.bpm}`;
+                        formattedMessage += ` - ${beatmapData.set.artist} - ${beatmapData.set.title} (${beatmapData.status}) | ${this.formatTime(beatmapData.length)} | BPM: ${beatmapData.bpm}`;
                     } else {
-                        formattedMessage += ` - ${beatmapData.set.artist} - ${beatmapData.set.title} (${beatmapData.difficulty} ${beatmapData.difficulty_rating}*) (${beatmapData.status}) | ${beatmapData.length} | AR: ${beatmapData.ar} | BPM: ${beatmapData.bpm}`;
+                        formattedMessage += ` - ${beatmapData.set.artist} - ${beatmapData.set.title} (${beatmapData.difficulty} - ${beatmapData.difficulty_rating}*) (${beatmapData.status}) | ${this.formatTime(beatmapData.length)} | AR: ${beatmapData.ar} | BPM: ${beatmapData.bpm}`;
                     }
                 }
                 this.target.sendMessage(formattedMessage);
