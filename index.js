@@ -10,6 +10,7 @@ if (!fs.existsSync('config.json')) {
         password: '',
         twitchChannel: '',
         osuUsername: '',
+        autoStart: true,
         debug: false
     };
 
@@ -34,8 +35,20 @@ function main() {
     
     try {
         app.listen(24727, async () => {
+            console.log('[info]'.blue, `debug: ${config.debug}`.bold.yellow);
             console.log('[info]'.blue, 'Webserver listening on port 24727.'.bold.green);
+            if(config.autoStart) {
+                console.log('[info]'.blue, 'Starting message listener because of autoStart...'.bold.yellow);
+                let res = await fetch('http://localhost:24727/api/server/start');
+                if(res.ok) {
+                    let data = await res.json();
+                    console.log('[info]'.blue, `autoStart result: ${data.message}`.bold.green);
+                } else {
+                    console.error('[error]'.red, 'Failed to start message listener:', await res.text());
+                }
+            }
             if(config.debug) return;
+            console.log('[info]'.blue, 'Opening localhost:24727 in your browser...'.bold.yellow);
             open('http://localhost:24727');
         });
     } catch (err) {
