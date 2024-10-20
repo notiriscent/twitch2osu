@@ -19,6 +19,11 @@ nav {
     border-bottom: 1px white solid;
 }
 
+nav img {
+    vertical-align: middle;
+    margin: -2px;
+}
+
 nav a {
     font-weight: 600;
     margin-right: 24px;
@@ -48,25 +53,57 @@ a:visited {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    height: 455px;
+    height: 380px;
     background-color: #1212123f;
 }
 
-.main .links {
+.controls {
     margin-top: 34px;
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    height: max-content;
 }
 
-.main .links a {
+.controls .control {
+    margin-left: 48px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.status-text {
+    font-size: 32px;
+    font-weight: 600;
+}
+
+.status-value {
+    font-size: 24px;
+    font-weight: 400;
+}
+
+.state {
+    flex-direction: row !important;
+}
+
+.state a {
+    cursor: pointer;
     font-weight: 500;
-    margin-right: 20px;
-    text-decoration: none;
+    margin-top: 12px;
     color: white;
-    padding: 6px;
-    border-radius: 8px;
+    outline: none;
+    border: none;
+    padding: 6px 12px;
+    height: fit-content;
+    border-radius: 6px;
+    font-size: 18px;
+    margin-right: 12px;
 }
 
-.main .links a:visited {
-    color: white;
+#start {
+    background-color: #12af12;
+}
+
+#stop {
+    background-color: #af1212;
 }

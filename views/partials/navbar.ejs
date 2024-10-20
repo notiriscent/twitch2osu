@@ -1,5 +1,16 @@
 <nav>
-    <a href="/">t2osu!</a>
+    <a href="/"
+       title="<%= clientState.isConnected ? 'Message listener online.' : 'Message listener offline.' %>"
+       style="color:
+       <% if (clientState.connectState == 'Connected') { %>
+           #00af00
+       <% } else if (clientState.connectState == 'Disconnected') { %>
+           #af0000
+       <% } else if (clientState.connectState == 'Connecting') { %>
+           #a0a012
+       <% } %>">
+        t2<img src="assets/logo-small.png">su!
+    </a>
     <a href="/config">settings</a>
     <a href="/log">log</a>
 </nav>

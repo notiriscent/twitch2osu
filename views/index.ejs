@@ -1,12 +1,35 @@
 <div class="main">
-    <img src="https://placehold.co/200x200?text=logo" alt="Logo" class="logo">
+    <img src="assets/logo-large.png" alt="Logo" class="logo">
     <h2>twitch2osu!</h2>
     <span class="about">A <a href="https://twitch.tv">Twitch</a>
         utility that redirects your chat's messages to <a href="https://osu.ppy.sh/home">osu!</a>
         DMs
     </span>
-    <div class="links">
-        <a href="https://github.com/notiriscent/twitch2osu" style="color: white; background-color: black;" target="_blank">GitHub</a>
-        <a href="https://osu.ppy.sh/users/18498571" style="color: white; background-color: #dc98a4;" target="_blank">creator's osu profile</a>
+</div>
+<div class="controls">
+    <div class="control status">
+        <span class="status-text">Status:</span>
+        <span class="status-value" id="status" style="color: 
+        <% if (clientState.connectState == 'Connected') { %>
+            #00af00
+        <% } else if (clientState.connectState == 'Disconnected') { %>
+            #af0000
+        <% } else if (clientState.connectState == 'Connecting') { %>
+            #afaf12
+        <% } %>
+        ;">
+            <% if (clientState.connectState == 'Connected') { %>
+                Online
+            <% } else if (clientState.connectState == 'Disconnected') { %>
+                Offline
+            <% } else if (clientState.connectState == 'Connecting') { %>
+                Connecting
+            <% } %> 
+        </span>
+    </div>
+    <div class="control state">
+        <a id="start">Start</a>
+        <a id="stop">Stop</a>
     </div>
 </div>
+<script src="script.js"></script>

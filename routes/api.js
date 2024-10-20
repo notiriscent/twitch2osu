@@ -9,7 +9,7 @@ client = new Client(config);
 
 router.get('/server/start', async (req, res) => {
     console.log('[info]'.blue, 'Message listener start attempted.'.green.bold);
-    if(client.active) {
+    if(client.banchoclient.isConnected()) {
         res.status(400).json({ message: 'Message listener is already running' });
         return;
     }
@@ -23,12 +23,26 @@ router.get('/server/start', async (req, res) => {
     }
 });
 
-router.get('/server', async (req, res) => {
-    if(client) {
-        res.status(200).json({ status: client.banchoclient.isConnected() });
-    } else {
-        res.status(404).json({ message: 'No server instance found' });
+router.get('/server/stop', async (req, res) => {
+    console.log('[info]'.blue, 'Message listener stop attempted.'.green.bold);
+    if(!client.banchoclient.getConnectState() == 'Connected') {
+        res.status(400).json({ message: 'Message listener is not running.' });
+        return;
     }
+    await client.stop();
+    res.status(200).json({ message: 'Message listener stopped successfully.' });
+});
+
+router.get('/server', async (req, res) => {
+    res.status(200).json({
+        isConnected: client.banchoclient.isConnected(),
+        connectState: client.banchoclient.getConnectState().description,
+        target: client.target?.ircUsername || 'Not connected'
+    });
+});
+
+router.get('/config', async (req, res) => {
+    res.status(200).json(config);
 });
 
 module.exports = router;
