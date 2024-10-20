@@ -36,7 +36,7 @@ function main() {
     try {
         app.listen(24727, async () => {
             console.log('[info]'.blue, `debug: ${config.debug}`.bold.yellow);
-            console.log('[info]'.blue, 'Webserver listening on port 24727.'.bold.green);
+            console.log('[info]'.blue, 'Webserver running at http://localhost:24727.'.bold.green);
             if(config.autoStart) {
                 console.log('[info]'.blue, 'Starting message listener because of autoStart...'.bold.yellow);
                 let res = await fetch('http://localhost:24727/api/server/start');
