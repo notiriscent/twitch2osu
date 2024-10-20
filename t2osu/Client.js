@@ -38,20 +38,27 @@ module.exports = class Client {
             if (!message.startsWith("!") || !message.startsWith("/")) {
                 const beatmapRegex = /https:\/\/osu\.ppy\.sh\/b(?:eatmapsets)?\/(\d+)(?:#osu\/(\d+))?/gmi;
                 let beatmapMatch = beatmapRegex.exec(message);
-    
-                let formattedMessage = `${tags.username}: ${message}`;
+
+                let formattedMessage = `${tags.username}: `;
 
                 if(beatmapMatch?.length > 0) {
                     const bm = new Beatmap(beatmapMatch[0], beatmapMatch[1]);
         
                     var beatmapData = await bm.getBeatmapData();
+    
+                    message = message.replace(beatmapMatch[0], `[${beatmapMatch[0]} ${beatmapData.set.artist} - ${beatmapData.set.title}] `);
+
+                    formattedMessage += message;
 
                     if(beatmapData.type == 1) {
-                        formattedMessage += ` - ${beatmapData.set.artist} - ${beatmapData.set.title} (${beatmapData.status}) | ${this.formatTime(beatmapData.length)} | BPM: ${beatmapData.bpm}`;
+                        formattedMessage += ` - (${beatmapData.status}) | ${this.formatTime(beatmapData.length)} | BPM: ${beatmapData.bpm}`;
                     } else {
-                        formattedMessage += ` - ${beatmapData.set.artist} - ${beatmapData.set.title} (${beatmapData.difficulty} - ${beatmapData.difficulty_rating}*) (${beatmapData.status}) | ${this.formatTime(beatmapData.length)} | AR: ${beatmapData.ar} | BPM: ${beatmapData.bpm}`;
+                        formattedMessage += ` - (${beatmapData.difficulty} - ${beatmapData.difficulty_rating}*) (${beatmapData.status}) | ${this.formatTime(beatmapData.length)} | AR: ${beatmapData.ar} | BPM: ${beatmapData.bpm}`;
                     }
+                } else {
+                    formattedMessage += message;
                 }
+
                 this.target.sendMessage(formattedMessage);
             }
         });
