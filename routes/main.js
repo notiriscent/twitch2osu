@@ -9,4 +9,10 @@ router.get('/', async (req, res) => {
     res.render('main', { page: 'index', appConfig: config, clientState: data });
 });
 
+router.get('/config', async (req, res) => {
+    let client = await fetch('http://localhost:24727/api/server');
+    let data = await client.json();
+    res.render('main', { page: 'config', appConfig: config, clientState: data });
+});
+
 module.exports = router;

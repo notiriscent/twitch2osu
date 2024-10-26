@@ -107,3 +107,74 @@ a:visited {
 #stop {
     background-color: #af1212;
 }
+
+/* config */
+
+.page-title {
+    text-align: center;
+    margin-top: 32px;
+}
+
+.settings {
+    display: flex;
+    flex-direction: column;
+}
+
+.setting {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 12px;
+}
+
+.setting label {
+    margin-left: 32px;
+    font-size: 24px;
+    font-weight: 400;
+}
+
+.setting input {
+    margin-left: 12px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: none;
+    height: fit-content;
+    font-size: 18px;
+    background-color: #bbbbcf2f;
+    border: 1px #a0a0a0 solid;
+}
+
+.setting input:focus {
+    outline: none;
+}
+
+.setting input {
+    caret-color: white;
+    color: white;
+    font-family: "Poppins", sans-serif;
+    max-width: 280px;
+    width: 220px;
+}
+
+.setting input[type="checkbox"] {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+
+#apply {
+    cursor: pointer;
+    font-weight: 500;
+    margin-top: 12px;
+    color: white;
+    outline: none;
+    border: none;
+    padding: 6px 12px;
+    height: fit-content;
+    border-radius: 6px;
+    font-size: 18px;
+    margin-right: 12px;
+    background-color: #14c8ff;
+    text-decoration: none;
+    margin-left: 52px;
+}

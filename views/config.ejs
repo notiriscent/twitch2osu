@@ -1,0 +1,68 @@
+<h1 class="page-title">Config</h1>
+<ul class="settings" id="settingslist"></ul>
+<a href="#" id="apply">Apply</a>
+
+<script>
+    const types = {
+        "password": "password",
+        "twitchChannel": "text",
+        "osuUsername": "text",
+        "autoStart": "checkbox",
+        "debug": "checkbox"
+    }
+    const settingsList = {};
+    
+    <% for(var i = 0; i < Object.keys(appConfig).length; i++) { %>
+        settingsList["<%= Object.keys(appConfig)[i]%>"] = "<%= appConfig[Object.keys(appConfig)[i]] %>";
+    <% } %>
+
+    for(var i = 0; i < Object.keys(settingsList).length; i++) {
+        const setting = document.createElement("div");
+        setting.className = "setting";
+        const input = document.createElement("input");
+        input.type = types[Object.keys(settingsList)[i]];
+        input.name = Object.keys(settingsList)[i];
+        input.value = settingsList[Object.keys(settingsList)[i]];
+        input.checked = settingsList[Object.keys(settingsList)[i]];
+        const label = document.createElement("label");
+        label.for = Object.keys(settingsList)[i];
+        label.textContent = Object.keys(settingsList)[i];
+        const result = label.textContent.replace(/([A-Z])/g, " $1");
+        const finalResult = result.charAt(0).toUpperCase() + result.slice(1);
+        label.textContent = finalResult;
+        label.textContent = label.textContent.replace("Osu", "osu!");
+
+        if(Object.keys(settingsList)[i] == 'password') {
+            label.innerHTML = '<a href="https://osu.ppy.sh/home/account/edit#legacy-api" target="_blank">osu! irc password</a>';
+        }
+
+        setting.appendChild(input);
+        setting.appendChild(label);
+        document.getElementById("settingslist").appendChild(setting);
+    }
+
+    
+    document.getElementById('apply').addEventListener('click', async () => {
+        // get all input field values/checked states
+        let inputs = document.querySelectorAll('input[type=text], input[type=password], input[type=checkbox]');
+        let formData = {};
+        inputs.forEach(input => {
+            // if input is a checkbox, send value as boolean, else, as text
+            formData[input.name] = input.type === 'checkbox'? input.checked : input.value;
+        });
+
+        console.log(formData);
+        let res = await fetch('/api/config/update', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+        });
+
+        if(res.ok) {
+            location.reload();
+        } else {
+            let data = await res.json();
+            alert(data.message);
+        }
+    });
+</script>
