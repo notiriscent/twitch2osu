@@ -2,8 +2,9 @@ const express = require('express');
 const colors = require('colors');
 const router = new express.Router();
 const Client = require('../t2osu/Client');
-const config = require('../config.json');
 const fs = require('fs');
+const path = require('path');
+const config = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'config.json')));
 var bodyParser = require('body-parser');
 router.use(bodyParser.json());
 
@@ -62,7 +63,7 @@ router.get('/config', async (req, res) => {
 router.post('/config/update', async (req, res) => {
     let newConfig = req.body;
     console.log('[info]'.blue, 'Received new config:'.green.bold, JSON.stringify(newConfig));
-    fs.writeFileSync('config.json', JSON.stringify(newConfig, '\n', 2));
+    fs.writeFileSync(path.join(process.cwd(), 'config.json'), JSON.stringify(newConfig, '\n', 2));
     await client?.stop();
     console.log('[info]'.blue, 'Config updated, server stopped. Restarting...');
     res.status(200);

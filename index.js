@@ -2,15 +2,16 @@ const Express = require('express');
 const fs = require('fs');
 const colors = require('colors');
 const app = Express();
+const path = require('path');
 const { open } = require('openurl');
 
-if (!fs.existsSync('config.json')) {
+if (!fs.existsSync(path.join(process.cwd(), 'config.json'))) {
     console.warn('[warn]'.yellow, 'First launch detected, writing default config.'.bold.white);
     const defaultConfig = {
         password: '',
         twitchChannel: '',
         osuUsername: '',
-        autoStart: true,
+        autoStart: false,
         debug: false
     };
 
@@ -26,10 +27,10 @@ if (!fs.existsSync('config.json')) {
 
 function main() {
     console.log('[info]'.blue, 't2osu! starting...'.white.bold)
-    const config = require('./config.json');
+    const config = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'config.json')));
 
     app.set('view engine', 'ejs');
-    app.use(Express.static('public'))
+    app.set('views', './views');
     app.use('/', require('./routes/main'));
     app.use('/api', require('./routes/api'));
     
@@ -56,3 +57,19 @@ function main() {
         process.exit(1);
     }
 }
+
+process
+  .on('unhandledRejection', (reason, p) => {
+    console.error(reason, 'Unhandled Rejection at Promise', p);
+    
+    process.stdin.on('data', (key) => {
+        process.exit(1);
+    });
+  })
+  .on('uncaughtException', err => {
+    console.error(err, 'Uncaught Exception thrown');
+    
+    process.stdin.on('data', (key) => {
+        process.exit(1);
+    });
+  });

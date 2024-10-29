@@ -19,7 +19,10 @@ module.exports = class Client {
             this.banchoclient = new Banchojs.BanchoClient({ username: settings['osuUsername'].replace(" ", "_"), password: settings['password'] });
         } catch(e) {
             console.error('[error]'.red, 'Failed to connect to osu! Bancho:', e.message, "\nSuggestion: check the config for typos".gray);
-            process.exit(1);
+            
+            process.stdin.on('data', (key) => {
+                process.exit(1);
+            });
         }
             this.tmiclient = new tmi.Client({
             channels: [ this.settings['twitchChannel'] ]
