@@ -1,6 +1,7 @@
 module.exports = class Beatmap {
     constructor(beatmapId, beatmapDiffId) {
         this._apiEndpoint = 'https://catboy.best/api/v2';
+        this._apiMetaEndpoint = 'https://catboy.best/api/meta/';
 
         this.beatmapId = beatmapId;
         this.beatmapDiffId = beatmapDiffId;
@@ -19,6 +20,8 @@ module.exports = class Beatmap {
         if(this.beatmapDiffId) {
             this.type = 0;
             this.mapUrl = this._apiEndpoint + '/b/' + this.beatmapDiffId;
+
+            this.mapMetaUrl = this._apiMetaEndpoint + this.beatmapDiffId;
         } else {
             this.type = 1;
             this.mapUrl = this._apiEndpoint + '/s/' + this.beatmapId;
@@ -38,6 +41,11 @@ module.exports = class Beatmap {
             this.set.beatmaps = data.beatmaps;
             this.set.title = data.set.title;
             this.set.artist = data.set.artist;
+
+            let metares = await fetch(this.mapMetaUrl);
+            let metadata = await metares.json();
+
+            this.ppforSS = metadata.pp['100'];
         } else {
             let diffsBySR = {};
 

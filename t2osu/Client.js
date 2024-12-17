@@ -47,7 +47,7 @@ module.exports = class Client {
                 const beatmapRegex = /https:\/\/osu\.ppy\.sh\/b(?:eatmapsets)?\/(\d+)(?:#osu\/(\d+))?/gmi;
                 let beatmapMatch = beatmapRegex.exec(message);
 
-                let formattedMessage = `${tags.username}: `;
+                let formattedMessage;
 
                 if(beatmapMatch?.length > 0) {
                     const bm = new Beatmap(beatmapMatch[0], beatmapMatch[1]);
@@ -56,18 +56,20 @@ module.exports = class Client {
     
                     message = message.replace(beatmapMatch[0], `[${beatmapMatch[0]} ${beatmapData.set.artist} - ${beatmapData.set.title}] `);
 
-                    formattedMessage += message;
+                    this.target.sendMessage(`${tags.username}: ` + message);
+
+                    formattedMessage = `${beatmapData.set.artist} - ${beatmapData.set.title}`;
 
                     if(beatmapData.type == 1) {
                         formattedMessage += ` - (${beatmapData.status}) | ${this.formatTime(beatmapData.length)} | BPM: ${beatmapData.bpm}`;
                     } else {
                         formattedMessage += ` - (${beatmapData.difficulty} - ${beatmapData.difficulty_rating}*) (${beatmapData.status}) | ${this.formatTime(beatmapData.length)} | AR: ${beatmapData.ar} | BPM: ${beatmapData.bpm}`;
                     }
+                    formattedMessage += ` | 100% = ${beatmapData.ppforSS.pp.toFixed(1)}pp`;
+                    this.target.sendMessage(formattedMessage);
                 } else {
-                    formattedMessage += message;
+                    this.target.sendMessage(`${tags.username}: ${message}`);
                 }
-
-                this.target.sendMessage(formattedMessage);
             }
         });
         return true;

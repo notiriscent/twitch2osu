@@ -2,7 +2,6 @@ const express = require('express');
 const router = new express.Router();
 const fs = require('fs');
 const path = require('path');
-const config = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'config.json')));
 
 router.get('/', async (req, res) => {
     let client = await fetch('http://localhost:24727/api/server');
