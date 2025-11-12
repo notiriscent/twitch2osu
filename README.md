@@ -1,3 +1,5 @@
+archived, lost interest
+
 # twitch2osu
 
 ![GitHub last commit (rework)](https://img.shields.io/github/last-commit/notiriscent/twitch2osu/rework)
